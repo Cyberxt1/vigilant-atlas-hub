@@ -103,9 +103,29 @@
   --muted-foreground: oklch(0.65 0.02 260);
   --accent: oklch(0.28 0.05 265);
   --accent-foreground: oklch(0.97 0 0);
+  --destructive: oklch(0.68 0.23 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --danger: oklch(0.68 0.23 25);
+  --danger-foreground: oklch(0.99 0 0);
+  --success: oklch(0.72 0.15 155);
+  --warning: oklch(0.82 0.15 75);
   --surface: oklch(0.18 0.025 260);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.7 0.2 265);
+  --gradient-brand: linear-gradient(135deg, oklch(0.62 0.2 265), oklch(0.66 0.18 320));
+  --gradient-danger: linear-gradient(135deg, oklch(0.68 0.23 20), oklch(0.62 0.22 0));
+  --gradient-soft: linear-gradient(135deg, oklch(0.22 0.045 265), oklch(0.22 0.045 320));
+  --shadow-glow: 0 20px 60px -24px oklch(0.7 0.2 265 / 0.55);
+  --shadow-danger: 0 20px 60px -18px oklch(0.68 0.23 20 / 0.5);
+  --sidebar: oklch(0.16 0.025 260);
+  --sidebar-foreground: oklch(0.97 0.005 260);
+  --sidebar-primary: oklch(0.7 0.2 265);
+  --sidebar-primary-foreground: oklch(0.14 0.02 260);
+  --sidebar-accent: oklch(0.22 0.025 260);
+  --sidebar-accent-foreground: oklch(0.97 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.7 0.2 265);
 }
 
 @layer base {

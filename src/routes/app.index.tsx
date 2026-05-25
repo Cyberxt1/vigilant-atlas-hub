@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { AlertTriangle, Bell, MapPin, ShieldAlert, ArrowRight, Activity } from "lucide-react";
 import { getReports } from "@/lib/reports";
+import { getUnreadHealthNotificationCount } from "@/lib/notifications";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/")({
@@ -15,8 +16,12 @@ function HomePage() {
   const [progress, setProgress] = useState(0);
   const [triggered, setTriggered] = useState(false);
   const [recent, setRecent] = useState(getReports().slice(0, 3));
+  const [unreadAlerts, setUnreadAlerts] = useState(getUnreadHealthNotificationCount);
 
-  useEffect(() => { setRecent(getReports().slice(0, 3)); }, []);
+  useEffect(() => {
+    setRecent(getReports().slice(0, 3));
+    setUnreadAlerts(getUnreadHealthNotificationCount());
+  }, []);
 
   useEffect(() => {
     if (!holding) { setProgress(0); return; }
@@ -43,9 +48,14 @@ function HomePage() {
           <p className="text-sm text-muted-foreground">Hi, {user?.displayName ?? user?.username}</p>
           <h1 className="text-2xl font-bold tracking-tight">Stay alert, stay safe</h1>
         </div>
-        <button className="rounded-full border bg-card p-2.5 hover:bg-muted">
+        <Link to="/app/notifications" className="relative rounded-full border bg-card p-2.5 hover:bg-muted">
           <Bell className="h-5 w-5" />
-        </button>
+          {unreadAlerts > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground">
+              {unreadAlerts}
+            </span>
+          )}
+        </Link>
       </header>
 
       {/* Panic button */}

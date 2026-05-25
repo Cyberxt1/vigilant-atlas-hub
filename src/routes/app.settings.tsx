@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { useTheme } from "@/lib/theme";
 import { toast } from "sonner";
 import { ChevronLeft, Bell, MapPin, Shield, Eye, Moon, type LucideIcon } from "lucide-react";
 
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/app/settings")({
 
 function SettingsPage() {
   const { user, updateUser, logout } = useAuth();
+  const { isDark, setTheme } = useTheme();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     displayName: user?.displayName ?? "",
@@ -17,7 +19,7 @@ function SettingsPage() {
     address: user?.address ?? "",
     emergencyContact: user?.emergencyContact ?? "",
   });
-  const [toggles, setToggles] = useState({ alerts: true, location: true, anon: false, dark: false });
+  const [toggles, setToggles] = useState({ alerts: true, location: true, anon: false });
 
   const save = () => {
     updateUser(form);
@@ -48,7 +50,7 @@ function SettingsPage() {
           <Toggle icon={Bell} label="Push alerts" desc="Get notified about nearby incidents" value={toggles.alerts} onChange={(v) => setToggles({ ...toggles, alerts: v })} />
           <Toggle icon={MapPin} label="Share location" desc="Used during emergencies" value={toggles.location} onChange={(v) => setToggles({ ...toggles, location: v })} />
           <Toggle icon={Eye} label="Anonymous reports" desc="Hide your name by default" value={toggles.anon} onChange={(v) => setToggles({ ...toggles, anon: v })} />
-          <Toggle icon={Moon} label="Dark theme" desc="Coming soon" value={toggles.dark} onChange={(v) => setToggles({ ...toggles, dark: v })} />
+          <Toggle icon={Moon} label="Dark theme" desc="Use the darker Atlas interface" value={isDark} onChange={(v) => setTheme(v ? "dark" : "light")} />
         </div>
       </section>
 
