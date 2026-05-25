@@ -20,24 +20,26 @@ interface AuthCtx {
   logout: () => void;
 }
 
-const PRESET = [
-  { username: "admin", password: "admin123", role: "admin" as Role, displayName: "Atlas Admin", onboarded: true },
-  { username: "user", password: "user123", role: "user" as Role, displayName: "Demo User", onboarded: true },
+type Account = AuthUser & { password: string };
+
+const PRESET: Account[] = [
+  { username: "admin", password: "admin123", role: "admin", displayName: "Atlas Admin", onboarded: true },
+  { username: "user", password: "user123", role: "user", displayName: "Demo User", onboarded: true },
 ];
 
 const Ctx = createContext<AuthCtx | null>(null);
 
-function readAccounts() {
+function readAccounts(): Account[] {
   if (typeof window === "undefined") return [...PRESET];
   try {
     const raw = localStorage.getItem("atlas_accounts");
     if (!raw) return [...PRESET];
-    return JSON.parse(raw);
+    return JSON.parse(raw) as Account[];
   } catch {
     return [...PRESET];
   }
 }
-function writeAccounts(a: any[]) {
+function writeAccounts(a: Account[]) {
   localStorage.setItem("atlas_accounts", JSON.stringify(a));
 }
 
@@ -49,7 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!localStorage.getItem("atlas_accounts")) writeAccounts(PRESET);
     const raw = localStorage.getItem("atlas_user");
     if (raw) {
-      try { setUser(JSON.parse(raw)); } catch {}
+      try { setUser(JSON.parse(raw) as AuthUser); } catch {
+        setUser(null);
+      }
     }
   }, []);
 
@@ -61,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login: AuthCtx["login"] = (username, password) => {
     const accounts = readAccounts();
-    const acc = accounts.find((a: any) => a.username.toLowerCase() === username.toLowerCase() && a.password === password);
+    const acc = accounts.find((a) => a.username.toLowerCase() === username.toLowerCase() && a.password === password);
     if (!acc) return { ok: false, error: "Invalid credentials" };
     const u: AuthUser = {
       username: acc.username, role: acc.role,
@@ -75,9 +79,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup: AuthCtx["signup"] = (username, password) => {
     const accounts = readAccounts();
-    if (accounts.some((a: any) => a.username.toLowerCase() === username.toLowerCase()))
+    if (accounts.some((a) => a.username.toLowerCase() === username.toLowerCase()))
       return { ok: false, error: "Username already exists" };
-    const acc = { username, password, role: "user" as Role, onboarded: false };
+    const acc: Account = { username, password, role: "user", onboarded: false };
     accounts.push(acc);
     writeAccounts(accounts);
     const u: AuthUser = { username, role: "user", onboarded: false };
@@ -90,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const next = { ...user, ...patch };
     persist(next);
     const accounts = readAccounts();
-    const idx = accounts.findIndex((a: any) => a.username === user.username);
+    const idx = accounts.findIndex((a) => a.username === user.username);
     if (idx >= 0) {
       accounts[idx] = { ...accounts[idx], ...patch };
       writeAccounts(accounts);

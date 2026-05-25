@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { getReportsBy } from "@/lib/reports";
 import { useMemo } from "react";
-import { LogOut, Settings, Shield, MapPin, Phone } from "lucide-react";
+import { LogOut, Settings, Shield, MapPin, Phone, type LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/app/profile")({
   component: ProfilePage,
@@ -78,7 +78,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   );
 }
 
-function InfoRow({ icon: Icon, label, value }: { icon: any; label: string; value: string }) {
+function InfoRow({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
   return (
     <div className="flex items-center gap-3 rounded-2xl border bg-card p-4">
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-primary">

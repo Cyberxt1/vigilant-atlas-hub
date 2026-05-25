@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
-import { ChevronLeft, Bell, MapPin, Shield, Eye, Moon } from "lucide-react";
+import { ChevronLeft, Bell, MapPin, Shield, Eye, Moon, type LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/app/settings")({
   component: SettingsPage,
@@ -82,7 +82,7 @@ function Input({ label, value, onChange }: { label: string; value: string; onCha
   );
 }
 
-function Toggle({ icon: Icon, label, desc, value, onChange }: { icon: any; label: string; desc: string; value: boolean; onChange: (v: boolean) => void }) {
+function Toggle({ icon: Icon, label, desc, value, onChange }: { icon: LucideIcon; label: string; desc: string; value: boolean; onChange: (v: boolean) => void }) {
   return (
     <div className="flex items-center gap-3 p-4">
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-primary"><Icon className="h-4 w-4" /></div>

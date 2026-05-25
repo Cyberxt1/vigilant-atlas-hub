@@ -1,10 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { getReports, updateReport, analyzeReport, type Report, type ReportStatus } from "@/lib/reports";
 import {
   Shield, LogOut, Search, Filter, TrendingUp, AlertTriangle, CheckCircle2,
-  Activity, Brain, Sparkles, MapPin, Clock, X, ChevronRight,
+  Activity, Brain, Sparkles, MapPin, Clock, X, ChevronRight, type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -100,7 +100,15 @@ function AdminPanel() {
   );
 }
 
-function Overview({ stats, reports, onOpen }: { stats: any; reports: Report[]; onOpen: (r: Report) => void }) {
+type ReportStats = {
+  total: number;
+  new: number;
+  investigating: number;
+  resolved: number;
+  critical: number;
+};
+
+function Overview({ stats, reports, onOpen }: { stats: ReportStats; reports: Report[]; onOpen: (r: Report) => void }) {
   const recent = reports.slice(0, 6);
   const byCategory = useMemo(() => {
     const m: Record<string, number> = {};
@@ -163,7 +171,7 @@ function Overview({ stats, reports, onOpen }: { stats: any; reports: Report[]; o
 }
 
 function ReportsTab({ reports, filter, setFilter, query, setQuery, onOpen }: {
-  reports: Report[]; filter: any; setFilter: any; query: string; setQuery: (v: string) => void; onOpen: (r: Report) => void;
+  reports: Report[]; filter: ReportStatus | "all"; setFilter: (value: ReportStatus | "all") => void; query: string; setQuery: (v: string) => void; onOpen: (r: Report) => void;
 }) {
   return (
     <div>
@@ -311,7 +319,7 @@ function ReportDrawer({ report, onClose, setStatus }: { report: Report; onClose:
   );
 }
 
-function StatCard({ label, value, icon: Icon, accent, danger }: { label: string; value: number; icon: any; accent?: boolean; danger?: boolean }) {
+function StatCard({ label, value, icon: Icon, accent, danger }: { label: string; value: number; icon: LucideIcon; accent?: boolean; danger?: boolean }) {
   return (
     <div className={`rounded-3xl border p-4 ${danger ? "bg-destructive/5 border-destructive/30" : "bg-card"}`}>
       <div className="flex items-center justify-between">
@@ -323,7 +331,7 @@ function StatCard({ label, value, icon: Icon, accent, danger }: { label: string;
   );
 }
 
-function Pill({ label, value }: { label: string; value: any }) {
+function Pill({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
       <p className="text-[10px] uppercase tracking-wider text-white/80">{label}</p>
