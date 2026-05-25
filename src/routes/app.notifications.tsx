@@ -43,7 +43,7 @@ function NotificationsPage() {
           </div>
           <div>
             <p className="text-sm font-semibold">{unread} unread health alert{unread === 1 ? "" : "s"}</p>
-            <p className="text-xs text-muted-foreground">Color-coded local health updates.</p>
+            {/* <p className="text-xs text-muted-foreground">Color-coded local health updates.</p> */}
           </div>
         </div>
       </div>
